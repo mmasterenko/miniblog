@@ -61,9 +61,20 @@ def unsubscribe(subscriber, users):
         obj.follows_to.remove(users)
 
 
-## operations:
+def mark_viewed(user, post):
+    """
+    Mark `post` as viewed by the `user`
+    :param user: instance of User
+    :param post: queryset (list) of instances of Post OR instance of Post
+    """
+    obj = Viewed.objects.get(user=user)
+    if isinstance(post, (models.QuerySet, list)):
+        obj.posts.add(*post)
+    if isinstance(post, Post):
+        obj.posts.add(post)
 
-# create_post(user, header, text)
+
+## operations:
 
 # subscribe(subscriber, to_user)
 
