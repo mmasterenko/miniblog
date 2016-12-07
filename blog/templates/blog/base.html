@@ -9,6 +9,7 @@
 {% if user.is_authenticated %}
     <p>Добро пожаловать: <b>{{ user }}</b> (<a href="{% url 'logout' %}">Выйти</a>) |
         <a href="{% url 'lenta' %}">моя лента</a> |
+        <a href="{% url 'posts' %}">мои посты</a> |
         <a href="#">создать пост</a> |
         <a href="{% url 'users' %}">блоги</a>
     </p>

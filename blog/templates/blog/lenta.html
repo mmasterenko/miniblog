@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block title %} Моя лента {% endblock %}
+{% block content %}
+
+    {% if post_list %}
+        {% include 'blog/_i_post_list.html' %}
+    {% else %}
+        <p>у вас нет подписок</p>
+    {% endif %}
+
+
+{% endblock %}

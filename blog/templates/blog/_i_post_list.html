@@ -1,0 +1,7 @@
+{% for post in post_list %}
+    <h4>{{ post.header }}</h4>
+    <p>{{ post.text }}</p>
+    <p><i>{{ post.date }}</i></p>
+    <p><i>{{ post.user }}</i></p>
+    <hr>
+{% endfor %}

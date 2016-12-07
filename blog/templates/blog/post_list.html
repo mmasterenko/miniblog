@@ -2,13 +2,15 @@
 {% block title %} Моя лента {% endblock %}
 {% block content %}
 
-    {% for post in post_list %}
-        <h4>{{ post.header }}</h4>
-        <p>{{ post.text }}</p>
-        <p><i>{{ post.date }}</i></p>
-        <p><i>{{ post.user }}</i></p>
-        <hr>
-    {% endfor %}
+    {% if post_list %}
+        {% include 'blog/_i_post_list.html' %}
+    {% else %}
+        {% if view.kwargs.username %}
+            <p>у пользователя <b>{{ view.kwargs.username }}</b> нет постов</p>
+        {% else %}
+            <p>у вас нет постов</p>
+        {% endif %}
+    {% endif %}
 
 
 {% endblock %}

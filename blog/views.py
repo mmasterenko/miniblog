@@ -12,6 +12,17 @@ from .models import Post, Subscription, Viewed
 class LentaView(LoginRequiredMixin, ListView):
 
     model = Post
+    template_name = 'blog/lenta.html'
+
+    def get_queryset(self):
+        try:
+            subscription = self.request.user.subscription
+        except Subscription.DoesNotExist:
+            return self.model.objects.none()
+
+        users_follows_to = subscription.follows_to.all()
+
+        return self.model.objects.filter(user__in=users_follows_to)
 
 
 class UserListView(ListView):
@@ -20,7 +31,7 @@ class UserListView(ListView):
     template_name = 'blog/user_list.html'
 
     def get_queryset(self):
-        return User.objects.filter(is_staff=False, is_active=True)
+        return User.objects.filter(is_staff=False, is_active=True).exclude(username=self.request.user)
 
 
 class PostListView(ListView):
