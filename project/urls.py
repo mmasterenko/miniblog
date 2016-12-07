@@ -16,9 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.conf import settings
 from django.contrib import admin
+from blog.views import LentaView, LoginView, logout_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', LentaView.as_view(), name='lenta'),
+    url(r'^accounts/login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', logout_view, name='logout'),
 ]
 
 if settings.DEBUG:
