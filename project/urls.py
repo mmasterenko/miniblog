@@ -16,13 +16,17 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.conf import settings
 from django.contrib import admin
-from blog.views import LentaView, LoginView, logout_view
+from blog.views import LentaView, LoginView, logout_view, testview, UserListView, PostListView, MyPostListView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', LentaView.as_view(), name='lenta'),
     url(r'^accounts/login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', logout_view, name='logout'),
+    url(r'^$', LentaView.as_view(), name='lenta'),  # lenta of a logined user
+    url(r'^users/$', UserListView.as_view(), name='users'),  # all users
+    url(r'^users/(?P<username>[\w.@+-]+)/$', PostListView.as_view(), name='user'),  # all posts of the user
+    url(r'^posts/$', MyPostListView.as_view(), name='posts'),  # all posts of a logined user
+    url(r'^posts/(?P<pk>[0-9]+)/$', testview, name='post'),  # the post
 ]
 
 if settings.DEBUG:

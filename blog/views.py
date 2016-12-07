@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
@@ -12,6 +12,29 @@ from .models import Post, Subscription, Viewed
 class LentaView(LoginRequiredMixin, ListView):
 
     model = Post
+
+
+class UserListView(ListView):
+
+    model = User
+    template_name = 'blog/user_list.html'
+
+    def get_queryset(self):
+        return User.objects.filter(is_staff=False, is_active=True)
+
+
+class PostListView(ListView):
+
+    model = Post
+
+    def get_queryset(self):
+        return Post.objects.filter(user__username=self.kwargs.get('username'))
+
+
+class MyPostListView(LoginRequiredMixin, PostListView):
+
+    def get_queryset(self):
+        return Post.objects.filter(user=self.request.user.id)
 
 
 class LoginView(FormView):

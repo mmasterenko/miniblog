@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+{% block title %} Список пользователей {% endblock %}
+{% block content %}
+    <h3>Доступны блоги следующих пользователей:</h3>
+    <ol>
+        {% for user in user_list %}
+            <li><a href="{% url 'user' user.username %}">{{ user }}</a></li>
+        {% endfor %}
+    </ol>
+{% endblock %}
