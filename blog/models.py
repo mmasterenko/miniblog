@@ -9,6 +9,9 @@ class Post(models.Model):
     text = models.TextField('текст')
     date = models.DateTimeField('дата публикации', default=timezone.now)
 
+    class Meta:
+        ordering = ['-date']
+
     def __str__(self):
         return self.header
 
