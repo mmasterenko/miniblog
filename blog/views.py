@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.views.generic import ListView, FormView, DetailView, CreateView, DeleteView, RedirectView
@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 
-from .models import Post, Subscription, Viewed, subscribe, unsubscribe
+from .models import Post, Subscription, subscribe, unsubscribe, mark_viewed, mark_unviewed
 
 
 class LentaView(LoginRequiredMixin, ListView):
@@ -82,6 +82,21 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 class PostView(DetailView):
 
     model = Post
+
+
+class PostMarkViewedView(LoginRequiredMixin, RedirectView):
+
+    pattern_name = 'post'
+    get_viewed = True
+
+    def get_redirect_url(self, *args, **kwargs):
+        post = get_object_or_404(Post, pk=kwargs['pk'])
+        if self.get_viewed:
+            mark_viewed(self.request.user, post)
+        else:
+            mark_unviewed(self.request.user, post)
+        self.url = self.request.META.get('HTTP_REFERER')
+        return super(PostMarkViewedView, self).get_redirect_url(*args, **kwargs)
 
 
 class DeletePostView(LoginRequiredMixin, DeleteView):

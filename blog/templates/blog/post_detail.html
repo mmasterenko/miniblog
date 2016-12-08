@@ -8,6 +8,12 @@
     <p><b>автор: </b> {{ post.user }}</p>
     {% if user == post.user %}
         <p><a href="{% url 'delete_post' post.id %}">удалить</a></p>
+    {% else %}
+        {% if post not in user.viewed.posts.all %}
+            <p><a href="{% url 'viewed_post' post.id %}">прочитал</a></p>
+        {% else %}
+            <p><b><i>прочитано (<a href="{% url 'unviewed_post' post.id %}">отменить</a>)</i></b></p>
+        {% endif %}
     {% endif %}
 
 {% endblock %}

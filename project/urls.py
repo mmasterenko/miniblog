@@ -17,7 +17,8 @@ from django.conf.urls import url, include
 from django.conf import settings
 from django.contrib import admin
 from blog.views import LentaView, LoginView, logout_view, testview, UserListView, PostListView, \
-    MyPostListView, CreatePostView, PostView, DeletePostView, FollowsListView, SubscribeView, UnsubscribeView
+    MyPostListView, CreatePostView, PostView, DeletePostView, FollowsListView, SubscribeView, \
+    UnsubscribeView, PostMarkViewedView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -33,6 +34,8 @@ urlpatterns = [
     url(r'^posts/(?P<pk>[0-9]+)/$', PostView.as_view(), name='post'),  # the post
     url(r'^posts/add/$', CreatePostView.as_view(), name='create_post'),
     url(r'^posts/(?P<pk>[0-9]+)/delete$', DeletePostView.as_view(), name='delete_post'),
+    url(r'^posts/(?P<pk>[0-9]+)/get_viewed/$', PostMarkViewedView.as_view(), name='viewed_post'),
+    url(r'^posts/(?P<pk>[0-9]+)/get_unviewed/$', PostMarkViewedView.as_view(get_viewed=False), name='unviewed_post'),
 ]
 
 if settings.DEBUG:

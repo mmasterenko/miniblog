@@ -80,17 +80,16 @@ def mark_viewed(user, post):
     :param user: instance of User
     :param post: queryset (list) of instances of Post OR instance of Post
     """
-    obj = Viewed.objects.get(user=user)
+    obj, is_created = Viewed.objects.get_or_create(user=user)
     if isinstance(post, (models.QuerySet, list)):
         obj.posts.add(*post)
     if isinstance(post, Post):
         obj.posts.add(post)
 
 
-## operations:
-
-# subscribe(subscriber, to_user)
-
-# unsubscribe(subscriber, from_user)
-
-# mark_viewed(user, post)
+def mark_unviewed(user, post):
+    obj, is_created = Viewed.objects.get_or_create(user=user)
+    if isinstance(post, (models.QuerySet, list)):
+        obj.posts.remove(*post)
+    if isinstance(post, Post):
+        obj.posts.remove(post)
