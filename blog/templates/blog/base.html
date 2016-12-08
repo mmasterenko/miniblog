@@ -5,19 +5,18 @@
     <title>{% block title %} Блог {% endblock %}</title>
 </head>
 <body>
-
-{% if user.is_authenticated %}
-    <p>Добро пожаловать: <b>{{ user }}</b> (<a href="{% url 'logout' %}">Выйти</a>) |
-        <a href="{% url 'lenta' %}">моя лента</a> |
-        <a href="{% url 'follows' %}">мои подписки</a> |
-        <a href="{% url 'posts' %}">мои посты</a> |
-        <a href="{% url 'create_post' %}">создать пост</a> |
-        <a href="{% url 'users' %}">блоги</a>
-    </p>
-{% else %}
-    <p><a href="{% url 'login' %}">Войти</a></p>
-{% endif %}
-
+<p>
+    {% if user.is_authenticated %}
+        Добро пожаловать: <b>{{ user }}</b> (<a href="{% url 'logout' %}">Выйти</a>)
+        | <a href="{% url 'lenta' %}">моя лента</a>
+        | <a href="{% url 'follows' %}">мои подписки</a>
+        | <a href="{% url 'posts' %}">мои посты</a>
+        | <a href="{% url 'create_post' %}">создать пост</a>
+    {% else %}
+        <a href="{% url 'login' %}">Войти</a>
+    {% endif %}
+    | <a href="{% url 'users' %}">блоги</a>
+</p>
 <hr>
 
 {% block content %}{% endblock %}
