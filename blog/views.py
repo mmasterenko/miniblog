@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.views.generic import ListView, FormView, DetailView
+from django.views.generic import ListView, FormView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
@@ -32,6 +32,16 @@ class UserListView(ListView):
 
     def get_queryset(self):
         return User.objects.filter(is_staff=False, is_active=True).exclude(username=self.request.user)
+
+
+class CreatePostView(LoginRequiredMixin, CreateView):
+
+    model = Post
+    fields = ['header', 'text']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(CreatePostView, self).form_valid(form)
 
 
 class PostListView(ListView):
@@ -71,5 +81,5 @@ def logout_view(request):
     return HttpResponseRedirect(redirect_to='/')
 
 
-def testview(request):
+def testview(request, *args, **kwargs):
     return HttpResponse('test view !')
