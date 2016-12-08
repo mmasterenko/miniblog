@@ -1,0 +1,13 @@
+{% extends 'blog/base.html' %}
+{% block title %} Пост {% endblock %}
+{% block content %}
+
+    <h3>{{ post.header }}</h3>
+    <p>{{ post.text }}</p>
+    <p><i>{{ post.date }}</i></p>
+    <p><b>автор: </b> {{ post.user }}</p>
+    {% if user == post.user %}
+        <p><a href="{% url 'delete_post' post.id %}">удалить</a></p>
+    {% endif %}
+
+{% endblock %}

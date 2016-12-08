@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http.response import HttpResponse, HttpResponseRedirect
-from django.views.generic import ListView, FormView, DetailView, CreateView
+from django.urls import reverse_lazy
+from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.views.generic import ListView, FormView, DetailView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
@@ -42,6 +43,34 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(CreatePostView, self).form_valid(form)
+
+
+class PostView(DetailView):
+
+    model = Post
+
+
+class DeletePostView(LoginRequiredMixin, DeleteView):
+
+    model = Post
+    success_url = reverse_lazy('posts')
+
+    def is_owner(self):
+        post = self.get_object()
+        return self.request.user == post.user
+
+    def get(self, request, *args, **kwargs):
+        if not self.is_owner():
+            return HttpResponseForbidden('у вас нет прав на удаление этого поста')
+        return super(DeletePostView, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        if not self.is_owner():
+            return HttpResponseForbidden('у вас нет прав на удаление этого поста')
+        return super(DeletePostView, self).delete(request, *args, **kwargs)
 
 
 class PostListView(ListView):

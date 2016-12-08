@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.conf import settings
 from django.contrib import admin
 from blog.views import LentaView, LoginView, logout_view, testview, UserListView, PostListView, \
-    MyPostListView, CreatePostView
+    MyPostListView, CreatePostView, PostView, DeletePostView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,8 +27,9 @@ urlpatterns = [
     url(r'^users/$', UserListView.as_view(), name='users'),  # all users
     url(r'^users/(?P<username>[\w.@+-]+)/posts/$', PostListView.as_view(), name='user'),  # all posts of the user
     url(r'^posts/$', MyPostListView.as_view(), name='posts'),  # all posts of a logined user
-    url(r'^posts/(?P<pk>[0-9]+)/$', testview, name='post'),  # the post
-    url(r'^posts/add/$', CreatePostView.as_view(), name='create_post')
+    url(r'^posts/(?P<pk>[0-9]+)/$', PostView.as_view(), name='post'),  # the post
+    url(r'^posts/add/$', CreatePostView.as_view(), name='create_post'),
+    url(r'^posts/(?P<pk>[0-9]+)/delete$', DeletePostView.as_view(), name='delete_post'),
 ]
 
 if settings.DEBUG:

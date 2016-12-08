@@ -1,8 +1,12 @@
-<h3>Новый пост</h3>
-<form action="" method="post">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" value="Сохранить" />
-</form>
+{% extends 'blog/base.html' %}
+{% block title %} Новый пост {% endblock %}
+{% block content %}
+    <h3>Новый пост</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Сохранить" />
+    </form>
+{% endblock %}

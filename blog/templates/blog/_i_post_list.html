@@ -1,7 +1,10 @@
 {% for post in post_list %}
-    <h4>{{ post.header }}</h4>
+    <h4><a href="{% url 'post' post.id %}">{{ post.header }}</a></h4>
     <p>{{ post.text }}</p>
     <p><i>{{ post.date }}</i></p>
-    <p><i>{{ post.user }}</i></p>
+    <p><b>автор: </b> <i>{{ post.user }}</i></p>
+    {% if user == post.user %}
+        <a href="{% url 'delete_post' post.id %}">удалить</a>
+    {% endif %}
     <hr>
 {% endfor %}
