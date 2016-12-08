@@ -57,6 +57,7 @@ class UnsubscribeView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         user = get_object_or_404(User, username=kwargs['username'])
         unsubscribe(self.request.user, user)
+        mark_unviewed(self.request.user, user.post_set.all())
         return super(UnsubscribeView, self).get_redirect_url()
 
 
