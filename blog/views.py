@@ -1,13 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.http.response import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
-from django.views.generic import ListView, FormView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, FormView, DetailView, CreateView, DeleteView, RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 
-from .models import Post, Subscription, Viewed
+from .models import Post, Subscription, Viewed, subscribe, unsubscribe
 
 
 class LentaView(LoginRequiredMixin, ListView):
@@ -38,6 +38,26 @@ class FollowsListView(LoginRequiredMixin, ListView):
             return self.model.objects.none()
 
         return subscription.follows_to.all()
+
+
+class SubscribeView(LoginRequiredMixin, RedirectView):
+
+    pattern_name = 'users'
+
+    def get_redirect_url(self, *args, **kwargs):
+        user = get_object_or_404(User, username=kwargs['username'])
+        subscribe(self.request.user, user)
+        return super(SubscribeView, self).get_redirect_url()
+
+
+class UnsubscribeView(LoginRequiredMixin, RedirectView):
+
+    pattern_name = 'follows'
+
+    def get_redirect_url(self, *args, **kwargs):
+        user = get_object_or_404(User, username=kwargs['username'])
+        unsubscribe(self.request.user, user)
+        return super(UnsubscribeView, self).get_redirect_url()
 
 
 class UserListView(ListView):

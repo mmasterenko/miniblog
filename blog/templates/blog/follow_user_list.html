@@ -6,7 +6,8 @@
         {% for user in user_list %}
             <li>
                 <a href="{% url 'user' user.username %}">{{ user }}</a>
-                (<i><a href="#">отписаться</a></i>)
+                (<i><a href="{% url 'unsubscribe' user.username %}">отписаться</a></i>) |
+                кол-во постов: {{ user.post_set.count }}
             </li>
         {% endfor %}
     </ol>

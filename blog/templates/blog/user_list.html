@@ -7,8 +7,11 @@
             <li>
                 <a href="{% url 'user' user.username %}">{{ user }}</a>
                 {% if user not in request.user.subscription.follows_to.all  %}
-                    (<a href="#">подписаться</a>)
+                    (<a href="{% url 'subscribe' user.username %}"><i>подписаться</i></a>)
+                {% else %}
+                    (<i>вы подписаны</i>)
                 {% endif %}
+                | кол-во постов: {{ user.post_set.count }}
             </li>
         {% endfor %}
     </ol>

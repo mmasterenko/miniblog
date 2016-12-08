@@ -48,7 +48,10 @@ def subscribe(subscriber, users):
     :param subscriber: instance of User
     :param users: queryset (list) of instances of User OR instance of User
     """
-    obj = Subscription.objects.create(subscriber=subscriber)
+    try:
+        obj = subscriber.subscription
+    except Subscription.DoesNotExist:
+        obj = Subscription.objects.create(subscriber=subscriber)
     if isinstance(users, (models.QuerySet, list)):
         obj.follows_to.add(*users)
     if isinstance(users, User):
@@ -61,7 +64,10 @@ def unsubscribe(subscriber, users):
     :param subscriber: instance of User
     :param users: queryset (list) of instances of User OR instance of User
     """
-    obj = Subscription.objects.get(subscriber=subscriber)
+    try:
+        obj = subscriber.subscription
+    except Subscription.DoesNotExist:
+        return
     if isinstance(users, (models.QuerySet, list)):
         obj.follows_to.remove(*users)
     if isinstance(users, User):

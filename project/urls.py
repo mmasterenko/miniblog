@@ -17,20 +17,22 @@ from django.conf.urls import url, include
 from django.conf import settings
 from django.contrib import admin
 from blog.views import LentaView, LoginView, logout_view, testview, UserListView, PostListView, \
-    MyPostListView, CreatePostView, PostView, DeletePostView, FollowsListView
+    MyPostListView, CreatePostView, PostView, DeletePostView, FollowsListView, SubscribeView, UnsubscribeView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^$', LentaView.as_view(), name='lenta'),  # lenta of a logined user
+    url(r'^follows/$', FollowsListView.as_view(), name='follows'),
     url(r'^users/$', UserListView.as_view(), name='users'),  # all users
     url(r'^users/(?P<username>[\w.@+-]+)/posts/$', PostListView.as_view(), name='user'),  # all posts of the user
+    url(r'^users/(?P<username>[\w.@+-]+)/subscribe/$', SubscribeView.as_view(), name='subscribe'),
+    url(r'^users/(?P<username>[\w.@+-]+)/unsubscribe/$', UnsubscribeView.as_view(), name='unsubscribe'),
     url(r'^posts/$', MyPostListView.as_view(), name='posts'),  # all posts of a logined user
     url(r'^posts/(?P<pk>[0-9]+)/$', PostView.as_view(), name='post'),  # the post
     url(r'^posts/add/$', CreatePostView.as_view(), name='create_post'),
     url(r'^posts/(?P<pk>[0-9]+)/delete$', DeletePostView.as_view(), name='delete_post'),
-    url(r'^follows/$', FollowsListView.as_view(), name='follows'),
 ]
 
 if settings.DEBUG:
