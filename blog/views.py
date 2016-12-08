@@ -26,6 +26,20 @@ class LentaView(LoginRequiredMixin, ListView):
         return self.model.objects.filter(user__in=users_follows_to)
 
 
+class FollowsListView(LoginRequiredMixin, ListView):
+
+    model = User
+    template_name = 'blog/follow_user_list.html'
+
+    def get_queryset(self):
+        try:
+            subscription = self.request.user.subscription
+        except Subscription.DoesNotExist:
+            return self.model.objects.none()
+
+        return subscription.follows_to.all()
+
+
 class UserListView(ListView):
 
     model = User

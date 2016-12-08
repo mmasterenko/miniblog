@@ -1,14 +1,12 @@
 {% extends 'blog/base.html' %}
 {% block title %} Список пользователей {% endblock %}
 {% block content %}
-    <h3>Доступны блоги следующих пользователей:</h3>
+    <h3>Вы подписаны на блоги следующих пользователей:</h3>
     <ol>
         {% for user in user_list %}
             <li>
                 <a href="{% url 'user' user.username %}">{{ user }}</a>
-                {% if user not in request.user.subscription.follows_to.all  %}
-                    (<a href="#">подписаться</a>)
-                {% endif %}
+                (<i><a href="#">отписаться</a></i>)
             </li>
         {% endfor %}
     </ol>
