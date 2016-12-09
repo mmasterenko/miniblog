@@ -14,6 +14,8 @@ class LentaView(LoginRequiredMixin, ListView):
 
     model = Post
     template_name = 'blog/lenta.html'
+    login_url = reverse_lazy('users')
+    redirect_field_name = None
 
     def get_queryset(self):
         try:
