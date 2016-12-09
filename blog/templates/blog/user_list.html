@@ -7,10 +7,10 @@
             <li>
                 <a href="{% url 'user' user.username %}">{{ user }}</a>
                 {% if request.user.is_authenticated %}
-                    {% if user not in request.user.subscription.follows_to.all  %}
-                        (<a href="{% url 'subscribe' user.username %}"><i>подписаться</i></a>)
-                    {% else %}
+                    {% if user in request.user.subscription.follows_to.all  %}
                         (<i>вы подписаны</i>)
+                    {% else %}
+                        (<a href="{% url 'subscribe' user.username %}"><i>подписаться</i></a>)
                     {% endif %}
                 {% endif %}
                 | кол-во постов: {{ user.post_set.count }}
