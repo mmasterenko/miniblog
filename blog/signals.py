@@ -14,4 +14,7 @@ def notify_followers(sender, instance=None, created=None, **kwargs):
         from_email = None  # use DEFAULT_FROM_EMAIL
         subject = 'New Post !'
         message = 'New post "%s" is available !' % instance.header
-        send_mail(subject, message, from_email, recipient_list)
+        try:
+            send_mail(subject, message, from_email, recipient_list)
+        except ConnectionError:
+            pass
